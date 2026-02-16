@@ -48,3 +48,22 @@ if not df.empty:
 else:
     st.info("No expenses yet")
 
+
+import plotly.express as px
+
+st.header("Analytics")
+
+if not df.empty:
+
+    # Category pie chart
+    pie = px.pie(df, names="category", values="amount", title="Spending by Category")
+    st.plotly_chart(pie, use_container_width=True)
+
+    # Daily spending chart
+    df["date"] = pd.to_datetime(df["date"])
+    daily = df.groupby("date")["amount"].sum().reset_index()
+
+    line = px.line(daily, x="date", y="amount", title="Daily Spending Trend", markers=True)
+    st.plotly_chart(line, use_container_width=True)
+
+
